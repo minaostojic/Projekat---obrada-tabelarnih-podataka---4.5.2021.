@@ -246,6 +246,110 @@ class MainClass {
     public string zanr;
     public double zarada;
   }
+  static double IzbacivanjeDolara (string s)
+  {
+    string S = "";
+    for(int i=0; i<s.Length; i++)
+    {
+      if (i != 0)
+      {
+        S += s[i];
+      }
+    }
+    double zarada_jednog_filma = Convert.ToDouble(S);
+    return zarada_jednog_filma;
+  }
+  static void NajmanjePopularanZanr(string[,] matrica)
+  {
+    StreamWriter ispis = new StreamWriter("Najmanje popularan zanr.txt");
+
+    Console.Write("Unesite period: ");
+    string period = Console.ReadLine();
+    string[] godine_perioda = period.Split(); //unos perioda
+
+    int prva_godina;
+    int.TryParse(godine_perioda[0], out prva_godina);
+    int poslednja_godina;
+    int.TryParse(godine_perioda[1], out poslednja_godina);
+
+    bool provera=false;
+
+    for (int i=prva_godina; i<=poslednja_godina; i++) //ceo period
+    {
+      ZaradaPoZanru[] zarada_po_zanru = new ZaradaPoZanru[matrica.GetLength(0)];
+      int brojac_zarada_po_zanru=0;
+
+      for (int j=0; j<matrica.GetLength(0); j++) //sve godine iz datoteke
+      {
+        string[] datum = matrica[j,3].Split(".");
+        int godina;
+        int.TryParse(datum[2], out godina);
+        if (godina == i) 
+        {
+          string[] zanrovi_jednog_filma = matrica[j,2].Split("|");
+          for (int l=0; l<zanrovi_jednog_filma.Length; l++) //svi zanrovi jednog filma
+          { 
+            double zarada_jednog_filma = IzbacivanjeDolara(matrica[j,5]);
+
+            for (int k=0; k<brojac_zarada_po_zanru; k++) //zanrovi koji su vec definisani u toj godini
+            {
+              if (zarada_po_zanru[k].zanr == zanrovi_jednog_filma[l])
+              {
+                zarada_po_zanru[k].zarada += zarada_jednog_filma;
+                provera=true;
+              }
+            }
+            if (!provera) //ako ne postoji taj zanr, pravi se novi
+            {
+              zarada_po_zanru[brojac_zarada_po_zanru].zanr = zanrovi_jednog_filma[l];
+              zarada_po_zanru[brojac_zarada_po_zanru].zarada = zarada_jednog_filma;
+              brojac_zarada_po_zanru++;
+            }
+            provera=false;
+          }
+        }
+      }
+      double min = zarada_po_zanru[0].zarada;
+      for (int b=1; b<brojac_zarada_po_zanru; b++)
+      {
+        if (min > zarada_po_zanru[b].zarada) //minimalna zarada po zanru
+        {
+          min = zarada_po_zanru[b].zarada; 
+        }
+      }
+      if (min != 0)
+      {
+        ispis.Write(i+";");
+        int brojac_minimalnih=0;
+        int brojac_minimalnih_2=0;
+        for (int b=0; b<brojac_zarada_po_zanru; b++)
+        {
+          if (min==zarada_po_zanru[b].zarada) brojac_minimalnih++;
+        }
+        for (int b=0; b<brojac_zarada_po_zanru; b++)
+        {
+          if (min==zarada_po_zanru[b].zarada)
+          {
+            if(brojac_minimalnih_2==brojac_minimalnih-1)
+            {
+              ispis.Write(zarada_po_zanru[b].zanr);
+              brojac_minimalnih_2++;
+            }
+            else
+            {
+              ispis.Write(zarada_po_zanru[b].zanr+"|");
+              brojac_minimalnih_2++;
+            }
+          }
+        }
+        min=Math.Round(min,2);
+        ispis.Write(";{0:C2}",min);
+        ispis.WriteLine();
+      }
+      min=0;
+    }
+    ispis.Close();
+  }
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
