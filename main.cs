@@ -342,29 +342,7 @@ class MainClass {
     }
     ispis.Close();
   }
-  static void ValidnostZarade (string[,] matrica)
-  {
-    for (int i=0; i<matrica.GetLength(0); i++)
-    {
-      string s = matrica[i,5];
-      if (s[0]!='$')
-      {
-        Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
-        break;
-      }
-      for (int j=1; j<s.Length; j++)
-      {
-        int a;
-        string b = Convert.ToString (s[j]);
-        if (!int.TryParse (b, out a) && s[j]!='.')
-        {
-          Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
-          break;
-        }
-      }
-    }
-  }
-
+  
   ///////////////////////////////////////////////////////////////
   //C metoda
   struct Zanrovi_rezisera
@@ -517,7 +495,38 @@ class MainClass {
     }
     ispis.Close();
   }
-
+  
+  /////////////////////////////////////////////////////////
+  static void ValidnostZarade (string[,] matrica)
+  {
+    for (int i=0; i<matrica.GetLength(0); i++)
+    {
+      string s = matrica[i,5];
+      if (s[0]!='$')
+      {
+        Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
+        break;
+      }
+      for (int j=1; j<s.Length; j++)
+      {
+        int a;
+        string b = Convert.ToString (s[j]);
+        if (!int.TryParse (b, out a) && s[j]!='.')
+        {
+          Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
+          break;
+        }
+      }
+    }
+  }
+   //Validnost datuma u ulaznoj datoteci
+  static bool Validan_datum_u_matrici(string unet_datum)
+  {
+    Izbacivanje_razmaka_datum(ref unet_datum);
+    DateTime konvertovan_datum;
+    if (!DateTime.TryParseExact(unet_datum, dozvoljeni_formati, null, DateTimeStyles.None, out konvertovan_datum)) return false;
+    return true;
+  }
   ////////////////////////////////////////////////////////
   //Biranje metoda - unos sa konzole
   static int red_pocetak = 15; //treba podesiti u zavisnosti od programa!!
