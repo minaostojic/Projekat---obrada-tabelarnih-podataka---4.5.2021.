@@ -340,6 +340,7 @@ class MainClass {
     ispis.Close();
   }
 
+  ///////////////////////////////////////////////////////////////
   //C metoda
   struct Zanrovi_rezisera
   {
@@ -348,7 +349,7 @@ class MainClass {
     public int[] br_filmovi;
   }
 
-  static string[] Unos_zanrova()
+  static string[] Unos_zanrova() //unos zanrova sa konzole
   {
     Console.WriteLine("Unesite zanrove po izboru (odvojene zapetama)");
     string[] zanr = Console.ReadLine().Split(",");
@@ -358,7 +359,7 @@ class MainClass {
     return zanr_niz;
   }
 
-  static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi)
+  static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) //broji filmove po zanru
   {
     for(int i=0;i<niz_ulazni_zanrovi.Length;i++)
     {
@@ -372,7 +373,7 @@ class MainClass {
     }
   }
    
-  static int Unet_reziser(Zanrovi_rezisera[] reziser_zanrovi, string reziser,int brojac_struktura)
+  static int Unet_reziser(Zanrovi_rezisera[] reziser_zanrovi, string reziser,int brojac_struktura) //vraca indeks rezisera ako je unet
   {
     for(int i=0;i<brojac_struktura;i++)
     {
@@ -390,7 +391,7 @@ class MainClass {
       return false;
   }
   
-  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz)
+  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz) //glavni metoda
   {
     Zanrovi_rezisera[] reziser_zanrovi = new Zanrovi_rezisera[1000];
     int brojac_struktura = 0;
@@ -436,7 +437,7 @@ class MainClass {
     return reziser_zanrovi;
   }
 
-  static void Ispis_zanrova_po_reziseru(Zanrovi_rezisera[] niz)
+  static void Ispis_zanrova_po_reziseru(Zanrovi_rezisera[] niz) //ispis C)
   {
     Console.Write("Unesite ime izlazne datoteke: ");
     string izlaz_ime = Console.ReadLine();
@@ -455,7 +456,6 @@ class MainClass {
   }
 
 
-  
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
