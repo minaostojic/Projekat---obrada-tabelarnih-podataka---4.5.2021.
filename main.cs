@@ -455,7 +455,91 @@ class MainClass {
     ispis.Close();
   }
 
+  ////////////////////////////////////////////////////////
+  //Biranje metoda - unos sa konzole
+  static int red_pocetak = 5; //treba podesiti u zavisnosti od programa!!
+  static int kolona_pocetak = 5;
+  static int x = kolona_pocetak + 3;
+	static int y = red_pocetak + 2;
+  
+  static void Crtanje_tabele()
+  {
+    //linije za iscrtavanje - delovi tabele
+    char hor = '\u2500', ver = '\u2502', g_levi = '\u250C', g_desni = '\u2510',d_levi = '\u2514', d_desni = '\u2518', gornji_sredina = '\u252C', donji_sredina = '\u2534';
+    Console.BackgroundColor = ConsoleColor.Blue;
+		Console.ForegroundColor = ConsoleColor.Black;
+    Console.SetCursorPosition(kolona_pocetak, red_pocetak);
+    for (int i=0; i<5; i++)
+    {
+      Console.SetCursorPosition(kolona_pocetak, red_pocetak++);
+      if (i == 0) Console.Write(g_levi);
+      else if (i == 4) Console.Write(d_levi);
+      else Console.Write(ver);
+      if (i == 0 || i == 4)
+      {
+        for (int j=0; j<3; j++)
+        {
+          for (int k=0; k<5; k++)
+            Console.Write(hor);
+          if (j != 2 && i == 0) Console.Write(gornji_sredina);
+          else if (j != 2 && i == 4) Console.Write(donji_sredina);
+        }
+      }
+      else if (i == 1 || i == 3)
+      {
+        for (int j=0; j<3; j++)
+        {
+          for (int k=0; k<5; k++)
+          {
+            Console.Write(" ");
+          }
+          if (j < 2) Console.Write(ver);
+        }
+      }
+      else
+      {
+        Console.ForegroundColor = ConsoleColor.White;
+				Console.Write("  A  ");
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.Write(ver);
+        Console.ForegroundColor = ConsoleColor.White;
+				Console.Write("  B  ");
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.Write(ver);
+        Console.ForegroundColor = ConsoleColor.White;
+				Console.Write("  C  ");
+        Console.ForegroundColor = ConsoleColor.Black;
+      }
+      if (i == 0) Console.Write(g_desni);
+      else if (i == 4) Console.Write(d_desni);
+      else Console.Write(ver);
+      if (i < 4) Console.WriteLine();
+    }
+    Console.ResetColor();
+    Console.SetCursorPosition(x,y);
+  }
 
+  static void Pomeranje_desno()
+  {
+    if (x < kolona_pocetak + 15) x += 6;
+  }
+  static void Pomeranje_levo()
+  {
+    if (x > kolona_pocetak + 3) x -= 6;
+  }
+
+  static int Biranje_metode()
+  {
+    ConsoleKeyInfo cki;
+    do
+    {
+      cki = Console.ReadKey(true);
+			if (cki.Key == ConsoleKey.LeftArrow) Pomeranje_levo();
+			else if (cki.Key == ConsoleKey.RightArrow) Pomeranje_desno();
+			Console.SetCursorPosition(x,y);
+    } while (cki.Key != ConsoleKey.Enter && cki.Key != ConsoleKey.Escape);
+      return x;
+  }
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
