@@ -342,6 +342,28 @@ class MainClass {
     }
     ispis.Close();
   }
+  static void ValidnostZarade (string[,] matrica)
+  {
+    for (int i=0; i<matrica.GetLength(0); i++)
+    {
+      string s = matrica[i,5];
+      if (s[0]!='$')
+      {
+        Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
+        break;
+      }
+      for (int j=1; j<s.Length; j++)
+      {
+        int a;
+        string b = Convert.ToString (s[j]);
+        if (!int.TryParse (b, out a) && s[j]!='.')
+        {
+          Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
+          break;
+        }
+      }
+    }
+  }
 
   ///////////////////////////////////////////////////////////////
   //C metoda
