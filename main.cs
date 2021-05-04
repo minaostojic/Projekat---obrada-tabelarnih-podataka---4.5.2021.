@@ -3,12 +3,6 @@ using System.IO;
 using System.Globalization;
 
 class MainClass {
-  struct Zanrovi_rezisera
-  {
-    public string reziser;
-    public string[] zanrovi;
-    public int[] br_filmovi;
-  }
   static void Ucitavanje_podataka (ref string[,] matrica)
   {
     if (File.Exists("ulazni_podaci.csv"))
@@ -252,8 +246,6 @@ class MainClass {
   }
   static void NajmanjePopularanZanr(string[,] matrica)
   {
-    StreamWriter ispis = new StreamWriter("Najmanje popularan zanr.txt");
-
     Console.Write("Unesite period: ");
     string period = Console.ReadLine();
     string[] godine_perioda = period.Split(); //unos perioda
@@ -262,6 +254,11 @@ class MainClass {
     int.TryParse(godine_perioda[0], out prva_godina);
     int poslednja_godina;
     int.TryParse(godine_perioda[1], out poslednja_godina);
+
+    Console.Write("Unesite ime izlazne datoteke: ");
+    string izlaz_ime = Console.ReadLine();
+    StreamWriter ispis = new StreamWriter(izlaz_ime);
+    //StreamWriter ispis = new StreamWriter("Najmanje popularan zanr.txt");
 
     bool provera=false;
 
@@ -342,6 +339,123 @@ class MainClass {
     }
     ispis.Close();
   }
+
+  //C metoda
+  struct Zanrovi_rezisera
+  {
+    public string reziser;
+    public string[] zanrovi;
+    public int[] br_filmovi;
+  }
+
+  static string[] Unos_zanrova()
+  {
+    Console.WriteLine("Unesite zanrove po izboru (odvojene zapetama)");
+    string[] zanr = Console.ReadLine().Split(",");
+    string[] zanr_niz = new string[zanr.Length];
+    for (int i=0; i<zanr_niz.Length; i++)
+      zanr_niz[i]=zanr[i];
+    return zanr_niz;
+  }
+
+  static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi)
+  {
+    for(int i=0;i<niz_ulazni_zanrovi.Length;i++)
+    {
+      for (int j=0; j<reziser_zanrovi.zanrovi.Length;j++)
+      {
+        if(niz_ulazni_zanrovi[i]==reziser_zanrovi.zanrovi[j])
+        {
+          reziser_zanrovi.br_filmovi[j]++;
+        }
+      }
+    }
+  }
+   
+  static int Unet_reziser(Zanrovi_rezisera[] reziser_zanrovi, string reziser,int brojac_struktura)
+  {
+    for(int i=0;i<brojac_struktura;i++)
+    {
+      if(reziser==reziser_zanrovi[i].reziser)return i;
+    }
+    return -1;
+  }
+
+  static bool Poredjenje_sa_konzolom(string zanr_niz,string[] niz_ulazni_zanrovi)
+  {
+      for (int j=0; j<niz_ulazni_zanrovi.Length;j++)
+      {
+        if(zanr_niz==niz_ulazni_zanrovi[j])return true;
+      }
+      return false;
+  }
+  
+  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz)
+  {
+    Zanrovi_rezisera[] reziser_zanrovi = new Zanrovi_rezisera[1000];
+    int brojac_struktura = 0;
+    string[] niz_ulazni_zanrovi;
+    
+    for (int i=0; i<podaci_matrica.GetLength(0); i++)
+    {
+      niz_ulazni_zanrovi = podaci_matrica[i,2].Split("|");
+      int indeks=Unet_reziser(reziser_zanrovi,podaci_matrica[i,4],brojac_struktura);
+      if(indeks!=-1)
+      {
+        for(int k=0; k<zanr_niz.Length; k++)
+        {
+          if(Poredjenje_sa_konzolom(zanr_niz[k],niz_ulazni_zanrovi))
+          {
+             Postoji_zanr_rezisera(reziser_zanrovi[indeks],niz_ulazni_zanrovi); 
+          }
+        }
+      }
+      else
+      {
+        int brojac=0;
+        bool provera=false;
+        reziser_zanrovi[brojac_struktura].br_filmovi= new int [zanr_niz.Length];
+        reziser_zanrovi[brojac_struktura].zanrovi= new string [zanr_niz.Length];
+        for(int k=0; k<zanr_niz.Length; k++)
+        {
+          if(Poredjenje_sa_konzolom(zanr_niz[k],niz_ulazni_zanrovi))
+          {
+            reziser_zanrovi[brojac_struktura].reziser = podaci_matrica[i,4];
+            reziser_zanrovi[brojac_struktura].zanrovi[brojac] = zanr_niz[k];
+            reziser_zanrovi[brojac_struktura].br_filmovi[brojac] = 1;
+            brojac++;
+            provera=true;
+          }
+        }
+        Array.Resize(ref reziser_zanrovi[brojac_struktura].br_filmovi,brojac);
+        Array.Resize(ref reziser_zanrovi[brojac_struktura].zanrovi,brojac);
+        if (provera)brojac_struktura++;
+      }
+    }
+    Array.Resize(ref reziser_zanrovi,brojac_struktura);
+    return reziser_zanrovi;
+  }
+
+  static void Ispis_zanrova_po_reziseru(Zanrovi_rezisera[] niz)
+  {
+    Console.Write("Unesite ime izlazne datoteke: ");
+    string izlaz_ime = Console.ReadLine();
+    StreamWriter ispis = new StreamWriter(izlaz_ime);
+
+    for (int i=0; i<niz.Length; i++)
+    {
+      ispis.Write(niz[i].reziser+";");
+      for (int j=0; j<niz[i].zanrovi.Length; j++)
+      {
+        ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]);
+      }
+      ispis.WriteLine();
+    }
+    ispis.Close();
+  }
+
+
+  
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
