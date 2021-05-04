@@ -246,9 +246,12 @@ class MainClass {
   }
   static void NajmanjePopularanZanr(string[,] matrica)
   {
-    Console.Write("Unesite period: ");
+    Console.Write("Unesite period (odvojen crticom): ");
     string period = Console.ReadLine();
-    string[] godine_perioda = period.Split(); //unos perioda
+    string[] godine_perioda = period.Split("-"); //unos perioda
+
+    Izbacivanje_razmaka_datum(godine_perioda[0]); //izbacivanje razmaka
+    Izbacivanje_razmaka_datum(godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
     int.TryParse(godine_perioda[0], out prva_godina);
