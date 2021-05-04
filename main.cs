@@ -246,19 +246,6 @@ class MainClass {
     public string zanr;
     public double zarada;
   }
-  static double IzbacivanjeDolara (string s)
-  {
-    string S = "";
-    for(int i=0; i<s.Length; i++)
-    {
-      if (i != 0)
-      {
-        S += s[i];
-      }
-    }
-    double zarada_jednog_filma = Convert.ToDouble(S);
-    return zarada_jednog_filma;
-  }
   static void NajmanjePopularanZanr(string[,] matrica)
   {
     StreamWriter ispis = new StreamWriter("Najmanje popularan zanr.txt");
