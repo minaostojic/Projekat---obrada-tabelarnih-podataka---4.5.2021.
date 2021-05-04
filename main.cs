@@ -642,7 +642,7 @@ class MainClass {
     Console.ForegroundColor = ConsoleColor.Blue;
     Console.WriteLine("\u2022 Dobrodošli u D2M program obrade tabelarnih podataka!");
     Console.WriteLine();
-    ponovo: Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima.");
+    ponovo: Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima (iz datoteke ulazni_podaci.csv).");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Napomena:");
