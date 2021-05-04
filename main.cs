@@ -60,7 +60,7 @@ class MainClass {
     DateTime konvertovan_datum;
     while (!DateTime.TryParseExact(unet_datum, dozvoljeni_formati, null, DateTimeStyles.None, out konvertovan_datum))
     {
-      Console.Error.WriteLine("Neispravan unos datuma. Pokusajte ponovo.");
+      Console.Error.WriteLine("Neispravan unos datuma. Pokušajte ponovo.");
       Console.Write($"Unesite {pocetni_krajnji} datum: ");
       unet_datum = Console.ReadLine();
       Izbacivanje_razmaka_datum(ref unet_datum);
@@ -256,7 +256,7 @@ class MainClass {
   {
     for (int i=0; i<4; i++)
         Console.WriteLine();
-    Console.Write("Unesite period (odvojen crticom): ");
+    Console.Write("Unesite period (u formatu: godina-godina): ");
     string period = Console.ReadLine();
     string[] godine_perioda = period.Split("-"); //unos perioda
 
@@ -378,7 +378,35 @@ class MainClass {
   {
     for (int i=0; i<4; i++)
         Console.WriteLine();
-    Console.Write("Unesite zanrove po izboru (odvojene zapetama): ");
+    Console.WriteLine("Postojeći žanrovi: ");
+    Console.WriteLine();
+    Console.Write("{0,-12}", "Comedy");
+    Console.Write("{0,-12}", "Drama");
+    Console.Write("{0,-12}", "Romance");
+    Console.Write("{0,-12}", "Thriller");
+    Console.WriteLine();
+    Console.Write("{0,-12}", "Adventure");
+    Console.Write("{0,-12}", "Western");
+    Console.Write("{0,-12}", "Fantasy");
+    Console.Write("{0,-12}", "Mystery");
+    Console.WriteLine();
+    Console.Write("{0,-12}", "Animation");
+    Console.Write("{0,-12}", "Musical");
+    Console.Write("{0,-12}", "Sci-Fi");
+    Console.Write("{0,-12}", "Action");
+    Console.WriteLine();
+    Console.Write("{0,-12}", "Western");
+    Console.Write("{0,-12}", "Documentary");
+    Console.Write("{0,-12}", "Horror");
+    Console.Write("{0,-12}", "War");
+    Console.WriteLine();
+    Console.Write("{0,-12}", "IMAX");
+    Console.Write("{0,-12}", "Children");
+    Console.Write("{0,-12}", "Crime");
+    Console.Write("{0,-12}", "Film-Noir");
+    Console.WriteLine();
+    Console.WriteLine();
+    Console.Write("Unesite žanrove po izboru (odvojene zapetama): ");
     string[] zanr = Console.ReadLine().Split(",");
     for (int i=0; i<zanr.Length; i++)
     {
@@ -421,7 +449,7 @@ class MainClass {
       return false;
   }
   
-  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz) //glavni metoda
+  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz) //glavna metoda
   {
     Zanrovi_rezisera[] reziser_zanrovi = new Zanrovi_rezisera[1000];
     int brojac_struktura = 0;
