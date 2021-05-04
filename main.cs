@@ -8,7 +8,6 @@ class MainClass {
     if (File.Exists("ulazni_podaci.csv"))
     {
       StreamReader podaci = new StreamReader("ulazni_podaci.csv");
-      //string[,] matrica = new string[1000,6];
       int brojac=0;
       string s = podaci.ReadLine();
       while (!podaci.EndOfStream)      
@@ -24,6 +23,13 @@ class MainClass {
       podaci.Close();
     }
     else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci");
+  }
+  struct Podaci_o_filmovima_rezisera
+  {
+    public string reziser;
+    public string[] filmovi;
+    public double[] zarade;
+    public double ukupna_zarada;
   }
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
