@@ -30,6 +30,8 @@ class MainClass {
     }
     else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci");
   }
+
+  //A metoda
   struct Podaci_o_filmovima_rezisera
   {
     public string reziser;
@@ -37,7 +39,7 @@ class MainClass {
     public double[] zarade;
     public double ukupna_zarada;
   }
-   //////////////////////////////////////////////////////////
+
   //Metode za unos datuma
   static void Izbacivanje_razmaka_datum (ref string datum)
   {
@@ -46,9 +48,9 @@ class MainClass {
       if (' '!=c) datum1+=c;
     datum = datum1;
   }
-  ////////////////////////////////////////////////////////////////////////////
+
   static string[] dozvoljeni_formati = {"d/MM/yyyy","dd/MM/yyyy","dd/M/yyyy","d/M/yyyy","d.MM.yyyy","dd.MM.yyyy","dd.M.yyyy","d.M.yyyy","d.MM.yyyy.","dd.MM.yyyy.","dd.M.yyyy.","d.M.yyyy."};
-  ///////////////////////////////////////////////////////////////////////////
+
   static DateTime Unos_datuma(string pocetni_krajnji)
   {
     string unet_datum = Console.ReadLine();
@@ -63,7 +65,7 @@ class MainClass {
     }
     return konvertovan_datum;
   }
-  /////////////////////////////////////////////////////////////////
+
   static DateTime[] Unos_perioda ()
   {
     DateTime[] datumi = new DateTime[2];
@@ -86,7 +88,7 @@ class MainClass {
     if (konvertovan_datum>=niz_period[0] && konvertovan_datum<=niz_period[1]) return true;
     return false;
   }
-  ///////////////////////////////////////////////////////////
+
    static double IzbacivanjeDolara (string s)
   {
     string S = "";
@@ -100,7 +102,7 @@ class MainClass {
     double zarada_jednog_filma = Convert.ToDouble(S);
     return zarada_jednog_filma;
   }
-  //////////////////////////////////////////////////////////
+
   //Metoda vraca indeks vec unetog rezisera, koji se trazi
   static int Indeks_trazenog_rezisera (string reziser,Podaci_o_filmovima_rezisera[] strukture)
   {
@@ -108,7 +110,7 @@ class MainClass {
       if (reziser == strukture[i].reziser) return i;
     return -1;
   }
-  /////////////////////////////////////////////////////////
+
   //Glavna metoda obrade: izdvajaju se reziseri, njihovi filmovi i zarade filmova iz zadatog perioda
   static Podaci_o_filmovima_rezisera[] Izdvajanje_filmova_sa_reziserima_u_zadatom_periodu (string[,] podaci_matrica, DateTime[] niz_period)
   {
@@ -142,7 +144,6 @@ class MainClass {
         reziser_filmovi[brojac_struktura].reziser = podaci_matrica[i,4];
         Array.Resize(ref reziser_filmovi[brojac_struktura].filmovi, 1);
         reziser_filmovi[brojac_struktura].filmovi[0] = film;
-        //brojaci_filmova[brojac_struktura]=0; unet je prvi film u novu strukturu;
         brojaci_filmova[brojac_struktura] = 1; //postavlja se indeks za upis sledeceg filma za datog rezisera
         Array.Resize(ref reziser_filmovi[brojac_struktura].zarade, 1);
         reziser_filmovi[brojac_struktura].zarade[0] = zarada;
@@ -153,7 +154,7 @@ class MainClass {
     Array.Resize(ref reziser_filmovi,brojac_struktura);
     return reziser_filmovi;
   }
-  ///////////////////////////////////////////////////
+
   //Metoda koja sortira filmove u okviru struktura i racuna ukupnu zaradu za tri najprofitabilnija filma
   static void Sortiranje_uk_zarada(ref Podaci_o_filmovima_rezisera[] niz)
   {
@@ -196,7 +197,7 @@ class MainClass {
         niz[i].ukupna_zarada += niz[i].zarade[j];
     }
   }
-  ///////////////////////////////////////////////////
+
   //Metoda koja na kraju sortira sve, tj. ceo niz struktura, prema ukupnoj zaradi
   static void Konacno_sortiranje(ref Podaci_o_filmovima_rezisera[] niz)
   {
@@ -220,7 +221,7 @@ class MainClass {
       niz[i] = zamena;
     }
   }
-  ////////////////////////////////////////////////////////////////////////////
+
    static void Ispis_niza_struktura(Podaci_o_filmovima_rezisera[] niz)
   {
     Console.Write("Unesite ime izlazne datoteke: ");
@@ -241,6 +242,9 @@ class MainClass {
     }
     ispis.Close();
   }
+
+  /////////////////////////////////////////////////////////////////
+  //B metoda
   struct ZaradaPoZanru 
   {
     public string zanr;
@@ -254,7 +258,7 @@ class MainClass {
     string period = Console.ReadLine();
     string[] godine_perioda = period.Split(); //unos perioda
 
-    int prva_godina;
+    int prva_godina; //pretvaranje perioda u int
     int.TryParse(godine_perioda[0], out prva_godina);
     int poslednja_godina;
     int.TryParse(godine_perioda[1], out poslednja_godina);
@@ -264,7 +268,7 @@ class MainClass {
     for (int i=prva_godina; i<=poslednja_godina; i++) //ceo period
     {
       ZaradaPoZanru[] zarada_po_zanru = new ZaradaPoZanru[matrica.GetLength(0)];
-      int brojac_zarada_po_zanru=0;
+      int brojac_zarada_po_zanru = 0;
 
       for (int j=0; j<matrica.GetLength(0); j++) //sve godine iz datoteke
       {
@@ -283,7 +287,7 @@ class MainClass {
               if (zarada_po_zanru[k].zanr == zanrovi_jednog_filma[l])
               {
                 zarada_po_zanru[k].zarada += zarada_jednog_filma;
-                provera=true;
+                provera = true;
               }
             }
             if (!provera) //ako ne postoji taj zanr, pravi se novi
@@ -307,17 +311,19 @@ class MainClass {
       if (min != 0)
       {
         ispis.Write(i+";");
-        int brojac_minimalnih=0;
-        int brojac_minimalnih_2=0;
-        for (int b=0; b<brojac_zarada_po_zanru; b++)
+        int brojac_minimalnih = 0; //ukupan broj minimalnih zarada po godini
+        int brojac_minimalnih_2 = 0;
+
+        for (int b=0; b<brojac_zarada_po_zanru; b++) //ukupan broj minimalnih zarada
         {
-          if (min==zarada_po_zanru[b].zarada) brojac_minimalnih++;
+          if (min == zarada_po_zanru[b].zarada) brojac_minimalnih++;
         }
-        for (int b=0; b<brojac_zarada_po_zanru; b++)
+
+        for (int b=0; b<brojac_zarada_po_zanru; b++) //ispis minimalnih zarada 
         {
-          if (min==zarada_po_zanru[b].zarada)
+          if (min == zarada_po_zanru[b].zarada)
           {
-            if(brojac_minimalnih_2==brojac_minimalnih-1)
+            if(brojac_minimalnih_2 == brojac_minimalnih-1)
             {
               ispis.Write(zarada_po_zanru[b].zanr);
               brojac_minimalnih_2++;
@@ -329,11 +335,10 @@ class MainClass {
             }
           }
         }
-        min=Math.Round(min,2);
         ispis.Write(";{0:C2}",min);
         ispis.WriteLine();
       }
-      min=0;
+      min = 0;
     }
     ispis.Close();
   }
