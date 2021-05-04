@@ -3,6 +3,12 @@ using System.IO;
 using System.Globalization;
 
 class MainClass {
+  struct Zanrovi_rezisera
+  {
+    public string reziser;
+    public string[] zanrovi;
+    public int[] br_filmovi;
+  }
   static void Ucitavanje_podataka (ref string[,] matrica)
   {
     if (File.Exists("ulazni_podaci.csv"))
