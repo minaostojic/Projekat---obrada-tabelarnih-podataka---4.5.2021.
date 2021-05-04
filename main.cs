@@ -252,21 +252,47 @@ class MainClass {
     public string zanr;
     public double zarada;
   }
+  static bool PostojiCrticaUPeriodu(string period)
+  {
+    foreach (char c in period)
+      if (c == '-') return true;
+    return false;
+  }
   static void NajmanjePopularanZanr(string[,] matrica)
   {
     for (int i=0; i<4; i++)
         Console.WriteLine();
+    
     Console.Write("Unesite period (u formatu: godina-godina): ");
     string period = Console.ReadLine();
+    while (!PostojiCrticaUPeriodu(period))
+    {
+      Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.Write("Unesite period (u formatu: godina-godina): ");
+      period = Console.ReadLine();
+    }
     string[] godine_perioda = period.Split("-"); //unos perioda
 
     Izbacivanje_razmaka_datum(ref godine_perioda[0]); //izbacivanje razmaka
     Izbacivanje_razmaka_datum(ref godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
-    int.TryParse(godine_perioda[0], out prva_godina);
     int poslednja_godina;
-    int.TryParse(godine_perioda[1], out poslednja_godina);
+    while (!int.TryParse(godine_perioda[0], out prva_godina) || !int.TryParse(godine_perioda[1], out poslednja_godina) || prva_godina <= 0 || poslednja_godina <= 0)
+    {
+      Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.Write("Unesite period (u formatu: godina-godina): ");
+      period = Console.ReadLine();
+      while (!PostojiCrticaUPeriodu(period))
+      {
+        Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+        Console.Write("Unesite period (u formatu: godina-godina): ");
+        period = Console.ReadLine();
+      }
+      godine_perioda = period.Split("-");
+      Izbacivanje_razmaka_datum(ref godine_perioda[0]);
+      Izbacivanje_razmaka_datum(ref godine_perioda[1]);
+    }
 
     Console.Write("Unesite ime izlazne datoteke: ");
     string izlaz_ime = Console.ReadLine();
@@ -373,6 +399,9 @@ class MainClass {
       s1 += s;
     }
     zanr = s1;
+    if (zanr == "Imax") zanr = zanr.ToUpper();
+    else if (zanr == "Sci-fi") zanr = "Sci-Fi";
+    else if (zanr == "Film-noir") zanr = "Film-Noir";
   }
   static string[] Unos_zanrova() //unos zanrova sa konzole
   {
