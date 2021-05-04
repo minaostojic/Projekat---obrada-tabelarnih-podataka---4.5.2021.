@@ -71,7 +71,7 @@ class MainClass {
   static DateTime[] Unos_perioda ()
   {
     DateTime[] datumi = new DateTime[2];
-    Console.WriteLine("Unesite period za koji se obrađuju podaci.");
+    Console.WriteLine("Unesite period za koji se obrađuju podaci. Datumi se unose u formatu: dan.mesec.godina ili dan/mesec/godina.");
     Console.Write("Unesite početni datum: ");
     string pocetni_krajnji = "početni";
     datumi[0] = Unos_datuma(pocetni_krajnji);
@@ -670,19 +670,19 @@ class MainClass {
     Console.ForegroundColor = ConsoleColor.Blue;
     Console.WriteLine("\u2022 Dobrodošli u D2M program obrade tabelarnih podataka!");
     Console.WriteLine();
-    ponovo: Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima (iz datoteke ulazni_podaci.csv).");
+    ponovo: Console.WriteLine("\u2022 Izaberite na koji način želite da obradite podatke o filmovima (iz datoteke ulazni_podaci.csv).");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Napomena:");
     Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("\u2022 Metoda A izdvaja filmove, iz zadatog perioda, po režiserima i sortira ih prema ukupnoj zaradi.");
+    Console.WriteLine("\u2022 Metoda A izdvaja iz zadatog perioda do tri filma sa najvećom zaradom, po režiserima i sortira ih prema ukupnoj zaradi.");
     Console.ForegroundColor = ConsoleColor.Yellow;
     Console.WriteLine("\u2022 Metoda B određuje najmanje popularan žanr u godinama zadatog perioda.");
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("\u2022 Metoda C izdvaja broj filmova režisera prema zadatim žanrovima.");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
-    Console.WriteLine("                          Izaberite metodu:");
+    Console.WriteLine("   Izaberite metodu pomeranjem strelica na tastaturi i pritiskom na Enter: ");
     Crtanje_tabele();
     int metoda = Biranje_metode();
     if (metoda == kolona_pocetak + 3)
@@ -707,9 +707,15 @@ class MainClass {
       Zanrovi_rezisera[] niz_provera = Zanrovi_po_reziserima(podaci_matrica,zanr_niz);
       Ispis_zanrova_po_reziseru(niz_provera);
     }
-    Console.Write("Da li želite da završite sa izvršavanjem programa? ");
+    Console.Write("Da li želite da završite sa izvršavanjem programa? (da/ne) ");
     string odgovor = Console.ReadLine();
-    if (odgovor == "ne" || odgovor == "Ne" || odgovor == "NE")
+    while (odgovor != "da" && odgovor != "ne")
+    {
+      Console.WriteLine("Neispravan unos odgovora. Pokušajte ponovo.");
+      Console.Write("Da li želite da završite sa izvršavanjem programa? (da/ne) ");
+      odgovor = Console.ReadLine();
+    }
+    if (odgovor == "ne")
     {
       Console.Clear();
       red_pocetak = 11;
@@ -722,7 +728,7 @@ class MainClass {
     {
       Console.WriteLine();
       Console.ForegroundColor = ConsoleColor.Blue;
-      Console.WriteLine("Hvala Vam na korišćenju D2M programa za obradu podataka o filmovima!\u263a");
+      Console.WriteLine("Hvala Vam na korišćenju D2M programa za obradu tabelarnih podataka!\u263a");
     }
   }
 }
