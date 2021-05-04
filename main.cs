@@ -241,6 +241,11 @@ class MainClass {
     }
     ispis.Close();
   }
+  struct ZaradaPoZanru 
+  {
+    public string zanr;
+    public double zarada;
+  }
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
