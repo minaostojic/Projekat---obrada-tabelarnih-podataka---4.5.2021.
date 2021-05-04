@@ -214,6 +214,27 @@ class MainClass {
       niz[i] = zamena;
     }
   }
+  ////////////////////////////////////////////////////////////////////////////
+   static void Ispis_niza_struktura(Podaci_o_filmovima_rezisera[] niz)
+  {
+    Console.Write("Unesite ime izlazne datoteke: ");
+    string izlaz_ime = Console.ReadLine();
+    StreamWriter ispis = new StreamWriter(izlaz_ime);
+    ispis.WriteLine("Director;Movie Titles;Revenue");
+    for (int i=0; i<niz.Length; i++)
+    {
+      ispis.Write(niz[i].reziser+";");
+      for (int j=0; j<niz[i].filmovi.Length; j++)
+      {
+        ispis.Write(niz[i].filmovi[j]);
+        if (j != niz[i].filmovi.Length-1) ispis.Write("|");
+      }
+      ispis.Write(";");
+      ispis.Write("{0:C2}",niz[i].ukupna_zarada);
+      ispis.WriteLine();
+    }
+    ispis.Close();
+  }
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
