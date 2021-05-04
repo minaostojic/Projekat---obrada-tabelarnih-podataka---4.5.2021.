@@ -348,15 +348,29 @@ class MainClass {
     public string[] zanrovi;
     public int[] br_filmovi;
   }
+  static void Veliko_slovo_zanr(ref string zanr) 
+  {
+    string s = Convert.ToString(zanr[0]).ToUpper();
+    string s1 = s;
 
+    for (int i=1; i<zanr.Length; i++)
+    {
+      s = Convert.ToString(zanr[i]).ToLower();
+      s1 += s;
+    }
+    zanr = s1;
+  }
   static string[] Unos_zanrova() //unos zanrova sa konzole
   {
-    Console.WriteLine("Unesite zanrove po izboru (odvojene zapetama)");
+    Console.Write("Unesite zanrove po izboru (odvojene zapetama): ");
     string[] zanr = Console.ReadLine().Split(",");
-    string[] zanr_niz = new string[zanr.Length];
-    for (int i=0; i<zanr_niz.Length; i++)
-      zanr_niz[i]=zanr[i];
-    return zanr_niz;
+    for (int i=0; i<zanr.Length; i++)
+    {
+      //Primena metode za izbacivanje razmaka
+      Izbacivanje_razmaka_datum(ref zanr[i]);
+      Veliko_slovo_zanr(ref zanr[i]);
+    }
+    return zanr;
   }
 
   static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) //broji filmove po zanru
@@ -448,7 +462,7 @@ class MainClass {
       ispis.Write(niz[i].reziser+";");
       for (int j=0; j<niz[i].zanrovi.Length; j++)
       {
-        ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]);
+        ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]+";");
       }
       ispis.WriteLine();
     }
