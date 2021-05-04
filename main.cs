@@ -3,6 +3,7 @@ using System.IO;
 using System.Globalization;
 
 class MainClass {
+  static bool validan = true;
   static void Ucitavanje_podataka (ref string[,] matrica)
   {
     if (File.Exists("ulazni_podaci.csv"))
@@ -14,6 +15,12 @@ class MainClass {
       {
         s = podaci.ReadLine();
         string[] elementi = s.Split(";");
+        if (elementi.Length!=6) 
+        {
+          Console.Error.WriteLine($"Greska! Nije unet dobar broj elemenata filma sa id {(brojac)}");
+          validan = false;
+          break;
+        }
         for (int i=0; i<6; i++)
         {
           matrica[brojac,i] = elementi[i];
@@ -25,6 +32,7 @@ class MainClass {
     else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci");
   }
 
+  ////////////////////////////////////////////////////////
   //A metoda
   struct Podaci_o_filmovima_rezisera
   {
@@ -237,7 +245,7 @@ class MainClass {
     ispis.Close();
   }
 
-  /////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   //B metoda
   struct ZaradaPoZanru 
   {
@@ -246,6 +254,8 @@ class MainClass {
   }
   static void NajmanjePopularanZanr(string[,] matrica)
   {
+    for (int i=0; i<4; i++)
+        Console.WriteLine();
     Console.Write("Unesite period (odvojen crticom): ");
     string period = Console.ReadLine();
     string[] godine_perioda = period.Split("-"); //unos perioda
@@ -261,7 +271,8 @@ class MainClass {
     Console.Write("Unesite ime izlazne datoteke: ");
     string izlaz_ime = Console.ReadLine();
     StreamWriter ispis = new StreamWriter(izlaz_ime);
-    //StreamWriter ispis = new StreamWriter("Najmanje popularan zanr.txt");
+    
+    ispis.WriteLine("Year;Movie Genre;Genre Revenue");
 
     bool provera=false;
 
@@ -343,7 +354,7 @@ class MainClass {
     ispis.Close();
   }
   
-  ///////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   //C metoda
   struct Zanrovi_rezisera
   {
@@ -365,6 +376,8 @@ class MainClass {
   }
   static string[] Unos_zanrova() //unos zanrova sa konzole
   {
+    for (int i=0; i<4; i++)
+        Console.WriteLine();
     Console.Write("Unesite zanrove po izboru (odvojene zapetama): ");
     string[] zanr = Console.ReadLine().Split(",");
     for (int i=0; i<zanr.Length; i++)
@@ -483,21 +496,24 @@ class MainClass {
     string izlaz_ime = Console.ReadLine();
     StreamWriter ispis = new StreamWriter(izlaz_ime);
 
+    ispis.WriteLine("Director;Movie Genre|Movie Genre Count");
+
     for (int i=0; i<niz.Length; i++)
     {
       BubbleSort(ref niz[i].zanrovi);
       ispis.Write(niz[i].reziser+";");
       for (int j=0; j<niz[i].zanrovi.Length; j++)
       {
-        ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]+";");
+        if (j!=niz[i].zanrovi.Length-1) ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]+";");
+        else ispis.Write(niz[i].zanrovi[j]+"|"+niz[i].br_filmovi[j]);
       }
       ispis.WriteLine();
     }
     ispis.Close();
   }
   
-  /////////////////////////////////////////////////////////
-  static void ValidnostZarade (string[,] matrica)
+  ////////////////////////////////////////////////////////
+  static void Validnost_zarade (string[,] matrica) //validnost zarade u matrici
   {
     for (int i=0; i<matrica.GetLength(0); i++)
     {
@@ -520,13 +536,18 @@ class MainClass {
     }
   }
    //Validnost datuma u ulaznoj datoteci
-  static bool Validan_datum_u_matrici(string unet_datum)
+  static void Validan_datum_u_matrici(string[,] matrica)
   {
-    Izbacivanje_razmaka_datum(ref unet_datum);
-    DateTime konvertovan_datum;
-    if (!DateTime.TryParseExact(unet_datum, dozvoljeni_formati, null, DateTimeStyles.None, out konvertovan_datum)) return false;
-    return true;
+    string unet_datum;
+    for (int i = 0; i<matrica.GetLength(0); i++)
+    {
+      unet_datum = matrica[i,3];
+      Izbacivanje_razmaka_datum(ref unet_datum);
+      DateTime konvertovan_datum;
+      if (!DateTime.TryParseExact(unet_datum, dozvoljeni_formati, null, DateTimeStyles.None, out konvertovan_datum)) {validan = false; break;}
+    }
   }
+
   ////////////////////////////////////////////////////////
   //Biranje metoda - unos sa konzole
   static int red_pocetak = 15; //treba podesiti u zavisnosti od programa!!
@@ -615,11 +636,13 @@ class MainClass {
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
-
+    Validnost_zarade(podaci_matrica);
+    Validan_datum_u_matrici(podaci_matrica);
+    if (!validan) return;
     Console.ForegroundColor = ConsoleColor.Blue;
     Console.WriteLine("\u2022 Dobrodošli u D2M program obrade tabelarnih podataka!");
     Console.WriteLine();
-    Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima.");
+    ponovo: Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima.");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Napomena:");
@@ -634,6 +657,44 @@ class MainClass {
     Console.WriteLine("                          Izaberite metodu:");
     Crtanje_tabele();
     int metoda = Biranje_metode();
-    
+    if (metoda == kolona_pocetak + 3)
+    {
+      //Izvrsavanje A metode
+      for (int i=0; i<4; i++)
+        Console.WriteLine();
+      DateTime[] niz_period = Unos_perioda();
+      Podaci_o_filmovima_rezisera[] niz_struktura = Izdvajanje_filmova_sa_reziserima_u_zadatom_periodu(podaci_matrica,niz_period);
+      Sortiranje_uk_zarada(ref niz_struktura);
+      Konacno_sortiranje(ref niz_struktura);
+      Ispis_niza_struktura(niz_struktura);
+    }
+    else if (metoda == kolona_pocetak + 9)
+    {
+      NajmanjePopularanZanr(podaci_matrica);
+    }
+    else 
+    {
+      Ucitavanje_podataka(ref podaci_matrica);
+      string[] zanr_niz = Unos_zanrova();
+      Zanrovi_rezisera[] niz_provera = Zanrovi_po_reziserima(podaci_matrica,zanr_niz);
+      Ispis_zanrova_po_reziseru(niz_provera);
+    }
+    Console.Write("Da li želite da završite sa izvršavanjem programa? ");
+    string odgovor = Console.ReadLine();
+    if (odgovor == "ne" || odgovor == "Ne" || odgovor == "NE")
+    {
+      Console.Clear();
+      red_pocetak = 11;
+      kolona_pocetak = 25;
+      x = kolona_pocetak + 3;
+      y = red_pocetak + 2;
+      goto ponovo;
+    }
+    else 
+    {
+      Console.WriteLine();
+      Console.ForegroundColor = ConsoleColor.Blue;
+      Console.WriteLine("Hvala Vam na korišćenju D2M programa za obradu podataka o filmovima!\u263a");
+    }
   }
 }
