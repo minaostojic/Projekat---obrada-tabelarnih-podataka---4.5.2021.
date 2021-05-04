@@ -498,8 +498,8 @@ class MainClass {
 
   ////////////////////////////////////////////////////////
   //Biranje metoda - unos sa konzole
-  static int red_pocetak = 5; //treba podesiti u zavisnosti od programa!!
-  static int kolona_pocetak = 5;
+  static int red_pocetak = 15; //treba podesiti u zavisnosti od programa!!
+  static int kolona_pocetak = 25;
   static int x = kolona_pocetak + 3;
 	static int y = red_pocetak + 2;
   
@@ -584,5 +584,25 @@ class MainClass {
   public static void Main (string[] args) {
     string[,] podaci_matrica = new string[1000,6];
     Ucitavanje_podataka(ref podaci_matrica);
+
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.WriteLine("\u2022 Dobrodošli u D2M program obrade tabelarnih podataka!");
+    Console.WriteLine();
+    Console.WriteLine("\u2022 Izaberite kako želite da obradite podatke o filmovima.");
+    Console.WriteLine();
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine("Napomena:");
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine("\u2022 Metoda A izdvaja filmove, iz zadatog perioda, po režiserima i sortira ih prema ukupnoj zaradi.");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine("\u2022 Metoda B određuje najmanje popularan žanr u godinama zadatog perioda.");
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("\u2022 Metoda C izdvaja broj filmova režisera prema zadatim žanrovima.");
+    Console.WriteLine();
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine("                          Izaberite metodu:");
+    Crtanje_tabele();
+    int metoda = Biranje_metode();
+    
   }
 }
