@@ -250,8 +250,8 @@ class MainClass {
     string period = Console.ReadLine();
     string[] godine_perioda = period.Split("-"); //unos perioda
 
-    Izbacivanje_razmaka_datum(godine_perioda[0]); //izbacivanje razmaka
-    Izbacivanje_razmaka_datum(godine_perioda[1]);
+    Izbacivanje_razmaka_datum(ref godine_perioda[0]); //izbacivanje razmaka
+    Izbacivanje_razmaka_datum(ref godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
     int.TryParse(godine_perioda[0], out prva_godina);
@@ -454,6 +454,29 @@ class MainClass {
     return reziser_zanrovi;
   }
 
+  public static void BubbleSort(ref string[] a) //leksikografsko sortiranje
+  {
+    bool promena = true;
+    while(promena)
+    {
+      promena = false;
+      for(int i=0;i < a.Length-1; i++)
+      {
+        if(a[i].CompareTo(a[i+1])==1)
+        {
+          a[i] = Zamena(ref  a[i+1], a[i]);
+          promena = true;
+        }
+      }
+    }
+  }
+  public static string Zamena(ref string a, string b)
+  {
+    string j = a;
+    a = b;
+    return j; 
+  }
+
   static void Ispis_zanrova_po_reziseru(Zanrovi_rezisera[] niz) //ispis C)
   {
     Console.Write("Unesite ime izlazne datoteke: ");
@@ -462,6 +485,7 @@ class MainClass {
 
     for (int i=0; i<niz.Length; i++)
     {
+      BubbleSort(ref niz[i].zanrovi);
       ispis.Write(niz[i].reziser+";");
       for (int j=0; j<niz[i].zanrovi.Length; j++)
       {
