@@ -307,12 +307,12 @@ class MainClass {
     Izbacivanje_razmaka_datum (ref godine_perioda[0]); //izbacivanje razmaka
     Izbacivanje_razmaka_datum (ref godine_perioda[1]);
 
-    Izbacivanje_tačke_datum (ref godine_perioda[0]);
+    Izbacivanje_tačke_datum (ref godine_perioda[0]); //izbacivanje tačke iz datuma
     Izbacivanje_tačke_datum (ref godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
     int poslednja_godina;
-    while (!int.TryParse(godine_perioda[0], out prva_godina) || !int.TryParse(godine_perioda[1], out poslednja_godina) || prva_godina <= 0 || poslednja_godina <= 0)
+    while (!int.TryParse(godine_perioda[0], out prva_godina) || !int.TryParse(godine_perioda[1], out poslednja_godina) || prva_godina <= 0 || poslednja_godina <= 0 || prva_godina > poslednja_godina)
     {
       Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
       Console.Write("Unesite period (u formatu: godina-godina): ");
@@ -767,7 +767,9 @@ class MainClass {
       Zanrovi_rezisera[] niz_provera = Zanrovi_po_reziserima(podaci_matrica,zanr_niz);
       Ispis_zanrova_po_reziseru(niz_provera);
     }
-    Console.Write("Da li želite da završite sa izvršavanjem programa? (da/ne) ");
+    Console.WriteLine();
+    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.Write("\u2022 Da li želite da završite sa izvršavanjem programa? (da/ne) ");
     string odgovor = Console.ReadLine();
     while (odgovor != "da" && odgovor != "ne")
     {
