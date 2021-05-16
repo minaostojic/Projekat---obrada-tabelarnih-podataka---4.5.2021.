@@ -17,7 +17,8 @@ class MainClass {
         string[] elementi = s.Split(";");
         if (elementi.Length!=6) 
         {
-          Console.Error.WriteLine($"Greska! Nije unet dobar broj elemenata filma sa id {(brojac)}");
+          Console.ForegroundColor = ConsoleColor.Red;
+          Console.Error.WriteLine($"Greska! Nije unet dobar broj podataka o filmu sa id {(brojac)}");
           validan = false;
           break;
         }
@@ -29,7 +30,11 @@ class MainClass {
       }
       podaci.Close();
     }
-    else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci.csv");
+    else 
+    {
+      Console.ForegroundColor = ConsoleColor.Red;
+      Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci.csv");
+    }
   }
 
   ////////////////////////////////////////////////////////
@@ -70,6 +75,7 @@ class MainClass {
     {
       Console.ForegroundColor = ConsoleColor.Red;
       Console.Error.WriteLine("Neispravan unos datuma. Pokušajte ponovo.");
+      Console.ForegroundColor = ConsoleColor.White;
       Console.Write($"Unesite {pocetni_krajnji} datum: ");
       unet_datum = Console.ReadLine();
       Izbacivanje_razmaka_datum(ref unet_datum);
@@ -235,7 +241,7 @@ class MainClass {
   }
 
   //Metoda koja daje poruku da je datoteka prazna, u slucaju da jeste
-  static void Poruka_prazna_datoteka(string ime_datoteke)
+  static bool Poruka_prazna_datoteka(string ime_datoteke)
   {
     StreamReader ulaz = new StreamReader(ime_datoteke);
     int brojac_redova = 0;
@@ -247,11 +253,9 @@ class MainClass {
     ulaz.Close();
     if (brojac_redova == 1) 
     {
-      StreamWriter ispis = new StreamWriter(ime_datoteke);
-      ispis.WriteLine("Nema filmova u unetom periodu.");
-      Console.WriteLine("Nema filmova u unetom periodu.");
-      ispis.Close();
+      return true;
     }
+    else return false;
   }
 
   //Ispis u izlaznu datoteku
@@ -274,7 +278,8 @@ class MainClass {
       ispis.WriteLine();
     }
     ispis.Close();
-    Poruka_prazna_datoteka(izlaz_ime);
+    if(Poruka_prazna_datoteka(izlaz_ime)) Console.WriteLine("Nema filmova u zadatom periodu.");
+
   }
 
   ////////////////////////////////////////////////////////
@@ -300,7 +305,7 @@ class MainClass {
     while (!PostojiCrticaUPeriodu(period))
     {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.Error.WriteLine("Neispravan unos. Pokušajte ponovo.");
       Console.ForegroundColor = ConsoleColor.White;
       Console.Write("Unesite period (u formatu: godina-godina): ");
       period = Console.ReadLine();
@@ -318,14 +323,14 @@ class MainClass {
     while (!int.TryParse(godine_perioda[0], out prva_godina) || !int.TryParse(godine_perioda[1], out poslednja_godina) || prva_godina <= 0 || poslednja_godina <= 0 || prva_godina > poslednja_godina)
     {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.Error.WriteLine("Neispravan unos. Pokušajte ponovo.");
       Console.ForegroundColor = ConsoleColor.White;
       Console.Write("Unesite period (u formatu: godina-godina): ");
       period = Console.ReadLine();
       while (!PostojiCrticaUPeriodu(period))
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+        Console.Error.WriteLine("Neispravan unos. Pokušajte ponovo.");
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Unesite period (u formatu: godina-godina): ");
         period = Console.ReadLine();
@@ -420,6 +425,7 @@ class MainClass {
     }
     ispis.Close();
     Poruka_prazna_datoteka(izlaz_ime);
+    if(Poruka_prazna_datoteka(izlaz_ime)) Console.WriteLine("Nema filmova u zadatom periodu.");
   }
   
   ////////////////////////////////////////////////////////
@@ -464,10 +470,15 @@ class MainClass {
     for (int i=0; i<zanr.Length; i++)
     {
       //Primena metode za izbacivanje razmaka
+      string cuvar_unosa = zanr[i];
       Izbacivanje_razmaka_datum(ref zanr[i]);
       Veliko_slovo_zanr(ref zanr[i]);
       if(!Ne_postoji_uneti_zanr(zanrovi, zanr[i]))
-        Console.Error.WriteLine("Uneti zanr ne postoji.");
+      {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Error.WriteLine($"Uneti zanr {cuvar_unosa} ne postoji.");
+        Console.ForegroundColor = ConsoleColor.White;
+      }
     }
     return zanr;
   }
@@ -603,6 +614,7 @@ class MainClass {
       ispis.WriteLine();
     }
     ispis.Close();
+    if(Poruka_prazna_datoteka(izlaz_ime)) Console.WriteLine("Nema filmova sa zadatim žanrom.");
   }
   
   ////////////////////////////////////////////////////////
@@ -613,6 +625,7 @@ class MainClass {
       string s = matrica[i,5];
       if (s[0]!='$')
       {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
         break;
       }
@@ -622,6 +635,7 @@ class MainClass {
         string b = Convert.ToString (s[j]);
         if (!int.TryParse (b, out a) && s[j]!='.')
         {
+          Console.ForegroundColor = ConsoleColor.Red;
           Console.Error.WriteLine("Zarada filma id - "+(i+1)+" je pogresno uneta.");
           break;
         }
@@ -781,7 +795,7 @@ class MainClass {
     while (odgovor != "da" && odgovor != "ne")
     {
       Console.ForegroundColor = ConsoleColor.Red;
-      Console.WriteLine("Neispravan unos odgovora. Pokušajte ponovo.");
+      Console.Error.WriteLine("Neispravan unos odgovora. Pokušajte ponovo.");
       Console.ForegroundColor = ConsoleColor.Cyan;
       Console.Write("Da li želite da završite sa izvršavanjem programa? (da/ne) ");
       odgovor = Console.ReadLine();
