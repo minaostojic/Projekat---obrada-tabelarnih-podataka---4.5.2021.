@@ -401,6 +401,7 @@ class MainClass {
       min = 0;
     }
     ispis.Close();
+    Poruka_prazna_datoteka(izlaz_ime);
   }
   
   ////////////////////////////////////////////////////////
