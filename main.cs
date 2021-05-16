@@ -43,11 +43,19 @@ class MainClass {
   }
 
   //Metode za unos datuma
-  static void Izbacivanje_razmaka_datum (ref string datum)
+  static void Izbacivanje_razmaka_datum (ref string datum) //izbacivanje viska razmaka iz datuma
   {
     string datum1 = "";
     foreach (char c in datum)
       if (' '!=c) datum1+=c;
+    datum = datum1;
+  }
+  
+  static void Izbacivanje_tačke_datum (ref string datum) //izbacivanje tacki na kraju godine
+  {
+    string datum1 = "";
+    foreach (char c in datum)
+      if ('.'!=c) datum1+=c;
     datum = datum1;
   }
 
@@ -296,8 +304,11 @@ class MainClass {
     }
     string[] godine_perioda = period.Split("-"); //unos perioda
 
-    Izbacivanje_razmaka_datum(ref godine_perioda[0]); //izbacivanje razmaka
-    Izbacivanje_razmaka_datum(ref godine_perioda[1]);
+    Izbacivanje_razmaka_datum (ref godine_perioda[0]); //izbacivanje razmaka
+    Izbacivanje_razmaka_datum (ref godine_perioda[1]);
+
+    Izbacivanje_tačke_datum (ref godine_perioda[0]);
+    Izbacivanje_tačke_datum (ref godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
     int poslednja_godina;
