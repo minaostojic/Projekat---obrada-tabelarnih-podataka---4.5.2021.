@@ -224,6 +224,27 @@ class MainClass {
     }
   }
 
+  //Metoda koja daje poruku da je datoteka prazna, u slucaju da jeste
+  static void Poruka_prazna_datoteka(string ime_datoteke)
+  {
+    StreamReader ulaz = new StreamReader(ime_datoteke);
+    int brojac_redova = 0;
+    while (!ulaz.EndOfStream)
+    {
+      ulaz.ReadLine();
+      brojac_redova++;
+    }
+    ulaz.Close();
+    if (brojac_redova == 1) 
+    {
+      StreamWriter ispis = new StreamWriter(ime_datoteke);
+      ispis.WriteLine("Nema filmova u unetom periodu.");
+      Console.WriteLine("Nema filmova u unetom periodu.");
+      ispis.Close();
+    }
+  }
+
+  //Ispis u izlaznu datoteku
    static void Ispis_niza_struktura(Podaci_o_filmovima_rezisera[] niz)
   {
     Console.Write("Unesite ime izlazne datoteke: ");
@@ -243,6 +264,7 @@ class MainClass {
       ispis.WriteLine();
     }
     ispis.Close();
+    Poruka_prazna_datoteka(izlaz_ime);
   }
 
   ////////////////////////////////////////////////////////
@@ -409,7 +431,13 @@ class MainClass {
         Console.WriteLine();
     Console.WriteLine("Postojeći žanrovi: ");
     Console.WriteLine();
-    Console.Write("{0,-12}", "Comedy");
+    string[] zanrovi = {"Comedy","Drama","Romance","Thriller","Adventure","Western","Fantasy","Mystery","Animation","Musical","Sci-Fi","Action","Documentary","Horror","War","IMAX","Children","Crime","Film-Noir"};
+    for (int i=0; i<zanrovi.Length; i++)
+    {
+      Console.Write("{0,-12}", zanrovi[i]);
+      if ((i + 1) % 4 == 0) Console.WriteLine();
+    }
+    /*Console.Write("{0,-12}", "Comedy");
     Console.Write("{0,-12}", "Drama");
     Console.Write("{0,-12}", "Romance");
     Console.Write("{0,-12}", "Thriller");
@@ -424,15 +452,14 @@ class MainClass {
     Console.Write("{0,-12}", "Sci-Fi");
     Console.Write("{0,-12}", "Action");
     Console.WriteLine();
-    Console.Write("{0,-12}", "Western");
     Console.Write("{0,-12}", "Documentary");
     Console.Write("{0,-12}", "Horror");
     Console.Write("{0,-12}", "War");
-    Console.WriteLine();
     Console.Write("{0,-12}", "IMAX");
+    Console.WriteLine();
     Console.Write("{0,-12}", "Children");
     Console.Write("{0,-12}", "Crime");
-    Console.Write("{0,-12}", "Film-Noir");
+    Console.Write("{0,-12}", "Film-Noir");*/
     Console.WriteLine();
     Console.WriteLine();
     Console.Write("Unesite žanrove po izboru (odvojene zapetama): ");
@@ -445,7 +472,6 @@ class MainClass {
     }
     return zanr;
   }
-
   static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) //broji filmove po zanru
   {
     for(int i=0;i<niz_ulazni_zanrovi.Length;i++)
@@ -607,7 +633,7 @@ class MainClass {
 
   ////////////////////////////////////////////////////////
   //Biranje metoda - unos sa konzole
-  static int red_pocetak = 15; //treba podesiti u zavisnosti od programa!!
+  static int red_pocetak = 15;
   static int kolona_pocetak = 25;
   static int x = kolona_pocetak + 3;
 	static int y = red_pocetak + 2;
@@ -704,7 +730,7 @@ class MainClass {
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Napomena:");
     Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("\u2022 Metoda A izdvaja iz zadatog perioda do tri filma sa najvećom zaradom, po režiserima i sortira ih prema ukupnoj zaradi.");
+    Console.WriteLine("\u2022 Metoda A izdvaja iz zadatog perioda do tri filma sa najvećom zaradom, po režiserima, i sortira ih prema ukupnoj zaradi.");
     Console.ForegroundColor = ConsoleColor.Yellow;
     Console.WriteLine("\u2022 Metoda B određuje najmanje popularan žanr u godinama zadatog perioda.");
     Console.ForegroundColor = ConsoleColor.Green;
@@ -727,11 +753,13 @@ class MainClass {
     }
     else if (metoda == kolona_pocetak + 9)
     {
+      //Izvrsavanje B metode
       NajmanjePopularanZanr(podaci_matrica);
     }
     else 
     {
-      Ucitavanje_podataka(ref podaci_matrica);
+      //Izvrsavanje C metode
+      //Ucitavanje_podataka(ref podaci_matrica);
       string[] zanr_niz = Unos_zanrova();
       Zanrovi_rezisera[] niz_provera = Zanrovi_po_reziserima(podaci_matrica,zanr_niz);
       Ispis_zanrova_po_reziseru(niz_provera);
