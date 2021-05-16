@@ -51,7 +51,7 @@ class MainClass {
     datum = datum1;
   }
   
-  static void Izbacivanje_tačke_datum (ref string datum) //izbacivanje tacki na kraju godine
+  static void Izbacivanje_tacke_datum (ref string datum) //izbacivanje tacki na kraju godine
   {
     string datum1 = "";
     foreach (char c in datum)
@@ -68,6 +68,7 @@ class MainClass {
     DateTime konvertovan_datum;
     while (!DateTime.TryParseExact(unet_datum, dozvoljeni_formati, null, DateTimeStyles.None, out konvertovan_datum))
     {
+      Console.ForegroundColor = ConsoleColor.Red;
       Console.Error.WriteLine("Neispravan unos datuma. Pokušajte ponovo.");
       Console.Write($"Unesite {pocetni_krajnji} datum: ");
       unet_datum = Console.ReadLine();
@@ -298,7 +299,9 @@ class MainClass {
     string period = Console.ReadLine();
     while (!PostojiCrticaUPeriodu(period))
     {
+      Console.ForegroundColor = ConsoleColor.Red;
       Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.ForegroundColor = ConsoleColor.White;
       Console.Write("Unesite period (u formatu: godina-godina): ");
       period = Console.ReadLine();
     }
@@ -307,19 +310,23 @@ class MainClass {
     Izbacivanje_razmaka_datum (ref godine_perioda[0]); //izbacivanje razmaka
     Izbacivanje_razmaka_datum (ref godine_perioda[1]);
 
-    Izbacivanje_tačke_datum (ref godine_perioda[0]); //izbacivanje tačke iz datuma
-    Izbacivanje_tačke_datum (ref godine_perioda[1]);
+    Izbacivanje_tacke_datum (ref godine_perioda[0]); //izbacivanje tačke iz datuma
+    Izbacivanje_tacke_datum (ref godine_perioda[1]);
 
     int prva_godina; //pretvaranje perioda u int
     int poslednja_godina;
     while (!int.TryParse(godine_perioda[0], out prva_godina) || !int.TryParse(godine_perioda[1], out poslednja_godina) || prva_godina <= 0 || poslednja_godina <= 0 || prva_godina > poslednja_godina)
     {
+      Console.ForegroundColor = ConsoleColor.Red;
       Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+      Console.ForegroundColor = ConsoleColor.White;
       Console.Write("Unesite period (u formatu: godina-godina): ");
       period = Console.ReadLine();
       while (!PostojiCrticaUPeriodu(period))
       {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Neispravan unos. Pokušajte ponovo.");
+        Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Unesite period (u formatu: godina-godina): ");
         period = Console.ReadLine();
       }
@@ -725,18 +732,18 @@ class MainClass {
     Validnost_zarade(podaci_matrica);
     Validan_datum_u_matrici(podaci_matrica);
     if (!validan) return;
-    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("\u2022 Dobrodošli u D2M program obrade tabelarnih podataka!");
     Console.WriteLine();
     ponovo: Console.WriteLine("\u2022 Izaberite na koji način želite da obradite podatke o filmovima (iz datoteke ulazni_podaci.csv).");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Napomena:");
-    Console.ForegroundColor = ConsoleColor.Red;
+    Console.ForegroundColor = ConsoleColor.DarkGreen;
     Console.WriteLine("\u2022 Metoda A izdvaja iz zadatog perioda do tri filma sa najvećom zaradom, po režiserima, i sortira ih prema ukupnoj zaradi.");
     Console.ForegroundColor = ConsoleColor.Yellow;
     Console.WriteLine("\u2022 Metoda B određuje najmanje popularan žanr u godinama zadatog perioda.");
-    Console.ForegroundColor = ConsoleColor.Green;
+    Console.ForegroundColor = ConsoleColor.Magenta;
     Console.WriteLine("\u2022 Metoda C izdvaja broj filmova režisera prema zadatim žanrovima.");
     Console.WriteLine();
     Console.ForegroundColor = ConsoleColor.White;
@@ -768,12 +775,14 @@ class MainClass {
       Ispis_zanrova_po_reziseru(niz_provera);
     }
     Console.WriteLine();
-    Console.ForegroundColor = ConsoleColor.Blue;
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Console.Write("\u2022 Da li želite da završite sa izvršavanjem programa? (da/ne) ");
     string odgovor = Console.ReadLine();
     while (odgovor != "da" && odgovor != "ne")
     {
+      Console.ForegroundColor = ConsoleColor.Red;
       Console.WriteLine("Neispravan unos odgovora. Pokušajte ponovo.");
+      Console.ForegroundColor = ConsoleColor.Cyan;
       Console.Write("Da li želite da završite sa izvršavanjem programa? (da/ne) ");
       odgovor = Console.ReadLine();
     }
@@ -789,8 +798,8 @@ class MainClass {
     else 
     {
       Console.WriteLine();
-      Console.ForegroundColor = ConsoleColor.Blue;
-      Console.WriteLine("Hvala Vam na korišćenju D2M programa za obradu tabelarnih podataka!\u263a");
+      Console.ForegroundColor = ConsoleColor.Cyan;
+      Console.WriteLine("Hvala Vam na korišćenju D2M programa za obradu tabelarnih podataka! \u263a");
     }
   }
 }
