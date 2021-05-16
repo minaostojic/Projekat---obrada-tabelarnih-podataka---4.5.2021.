@@ -29,7 +29,7 @@ class MainClass {
       }
       podaci.Close();
     }
-    else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci");
+    else Console.Error.WriteLine("Greska! Ne postoji datoteka ulazni_podaci.csv");
   }
 
   ////////////////////////////////////////////////////////
@@ -72,6 +72,7 @@ class MainClass {
   {
     DateTime[] datumi = new DateTime[2];
     Console.WriteLine("Unesite period za koji se obrađuju podaci. Datumi se unose u formatu: dan.mesec.godina ili dan/mesec/godina.");
+    Console.WriteLine("Filmovi iz datoteke su izdavani u periodu od 14.1.2000. do 11.12.2020. godine.");
     Console.Write("Unesite početni datum: ");
     string pocetni_krajnji = "početni";
     datumi[0] = Unos_datuma(pocetni_krajnji);
@@ -284,7 +285,7 @@ class MainClass {
   {
     for (int i=0; i<4; i++)
         Console.WriteLine();
-    
+    Console.WriteLine("Filmovi iz datoteke su izdavani u periodu od 2000. do 2020. godine.");
     Console.Write("Unesite period (u formatu: godina-godina): ");
     string period = Console.ReadLine();
     while (!PostojiCrticaUPeriodu(period))
@@ -437,29 +438,6 @@ class MainClass {
       Console.Write("{0,-12}", zanrovi[i]);
       if ((i + 1) % 4 == 0) Console.WriteLine();
     }
-    /*Console.Write("{0,-12}", "Comedy");
-    Console.Write("{0,-12}", "Drama");
-    Console.Write("{0,-12}", "Romance");
-    Console.Write("{0,-12}", "Thriller");
-    Console.WriteLine();
-    Console.Write("{0,-12}", "Adventure");
-    Console.Write("{0,-12}", "Western");
-    Console.Write("{0,-12}", "Fantasy");
-    Console.Write("{0,-12}", "Mystery");
-    Console.WriteLine();
-    Console.Write("{0,-12}", "Animation");
-    Console.Write("{0,-12}", "Musical");
-    Console.Write("{0,-12}", "Sci-Fi");
-    Console.Write("{0,-12}", "Action");
-    Console.WriteLine();
-    Console.Write("{0,-12}", "Documentary");
-    Console.Write("{0,-12}", "Horror");
-    Console.Write("{0,-12}", "War");
-    Console.Write("{0,-12}", "IMAX");
-    Console.WriteLine();
-    Console.Write("{0,-12}", "Children");
-    Console.Write("{0,-12}", "Crime");
-    Console.Write("{0,-12}", "Film-Noir");*/
     Console.WriteLine();
     Console.WriteLine();
     Console.Write("Unesite žanrove po izboru (odvojene zapetama): ");
@@ -469,9 +447,22 @@ class MainClass {
       //Primena metode za izbacivanje razmaka
       Izbacivanje_razmaka_datum(ref zanr[i]);
       Veliko_slovo_zanr(ref zanr[i]);
+      if(!Ne_postoji_uneti_zanr(zanrovi, zanr[i]))
+        Console.Error.WriteLine("Uneti zanr ne postoji.");
     }
     return zanr;
   }
+
+  //Metoda za uneti zanr koji ne postoji
+  static bool Ne_postoji_uneti_zanr(string[] zanrovi, string jedan_zanr)
+  {
+    for(int i=0; i<zanrovi.Length; i++)
+    {
+      if(jedan_zanr==zanrovi[i])return true;
+    }
+    return false;
+  }
+
   static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) //broji filmove po zanru
   {
     for(int i=0;i<niz_ulazni_zanrovi.Length;i++)
