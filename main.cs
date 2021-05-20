@@ -476,7 +476,7 @@ class MainClass {
       if(!Ne_postoji_uneti_zanr(zanrovi, zanr[i]))
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.Error.WriteLine($"Uneti zanr {cuvar_unosa} ne postoji.");
+        Console.Error.WriteLine($"Uneti žanr {cuvar_unosa} ne postoji.");
         Console.ForegroundColor = ConsoleColor.White;
       }
     }
@@ -493,7 +493,8 @@ class MainClass {
     return false;
   }
 
-  static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) //broji filmove po zanru
+  //Metoda koja broji filmove po zanru
+  static void Postoji_zanr_rezisera(Zanrovi_rezisera reziser_zanrovi ,string[] niz_ulazni_zanrovi) 
   {
     for(int i=0;i<niz_ulazni_zanrovi.Length;i++)
     {
@@ -507,7 +508,8 @@ class MainClass {
     }
   }
    
-  static int Unet_reziser(Zanrovi_rezisera[] reziser_zanrovi, string reziser,int brojac_struktura) //vraca indeks rezisera ako je unet
+   //Metoda koja vraca indeks rezisera ako je unet
+  static int Unet_reziser(Zanrovi_rezisera[] reziser_zanrovi, string reziser,int brojac_struktura)
   {
     for(int i=0;i<brojac_struktura;i++)
     {
@@ -516,6 +518,7 @@ class MainClass {
     return -1;
   }
 
+  //Metoda koja poredi ulazni zanr sa zanrom niza
   static bool Poredjenje_sa_konzolom(string zanr_niz,string[] niz_ulazni_zanrovi)
   {
       for (int j=0; j<niz_ulazni_zanrovi.Length;j++)
@@ -525,7 +528,8 @@ class MainClass {
       return false;
   }
   
-  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz) //glavna metoda
+  //Glavna metoda
+  static Zanrovi_rezisera[] Zanrovi_po_reziserima (string[,] podaci_matrica, string[] zanr_niz) 
   {
     Zanrovi_rezisera[] reziser_zanrovi = new Zanrovi_rezisera[1000];
     int brojac_struktura = 0;
@@ -571,7 +575,8 @@ class MainClass {
     return reziser_zanrovi;
   }
 
-  public static void BubbleSort(ref string[] a) //leksikografsko sortiranje
+  //Metoda za leksikografsko sortiranje
+  public static void BubbleSort(ref string[] a) 
   {
     bool promena = true;
     while(promena)
